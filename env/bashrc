@@ -1,0 +1,77 @@
+# Copyright © 2011 Nick Bargnesi <nick@den-4.com>.  All rights reserved.
+#
+# bash-environment is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# bash-environment is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with bash-environment.  If not, see <http://www.gnu.org/licenses/>.
+# ~/.bashrc: executed by bash(1) for non-login shells.
+# see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
+# for examples
+
+# If not running interactively, don't do anything
+[ -z "$PS1" ] && return
+
+# don't put duplicate lines in the history. See bash(1) for more options
+# don't overwrite GNU Midnight Commander's setting of `ignorespace'.
+export HISTCONTROL=$HISTCONTROL${HISTCONTROL+,}ignoredups
+# ... or force ignoredups and ignorespace
+export HISTCONTROL=ignoreboth
+
+# append to the history file, don't overwrite it
+shopt -s histappend
+
+# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
+
+# check the window size after each command and, if necessary,
+# update the values of LINES and COLUMNS.
+shopt -s checkwinsize
+
+# Make a directory and cd into it.
+md() { mkdir -p "$@" && cd "$@"; }
+
+# Print a filename with a different extension.
+chext() { echo "$1" | sed "s/\.[[:alnum:]]*$/\.$2/g"; }
+
+# Locale
+LANG=en_US.UTF-8
+LC_ALL=en_US.UTF-8
+
+# Source colors.
+[[ -f "$HOME/.bash_colors" ]] && . $HOME/.bash_colors
+[[ -f "$HOME/.bash_colors_custom" ]] && . $HOME/.bash_colors_custom
+
+# Source exports.
+[[ -f "$HOME/.bash_exports" ]] && . $HOME/.bash_exports
+[[ -f "$HOME/.bash_exports_custom" ]] && . $HOME/.bash_exports_custom
+
+# Source stock functions, then custom functions.
+[[ -f "$HOME/.bash_functions" ]] && . $HOME/.bash_functions
+[[ -f "$HOME/.bash_functions_custom" ]] && . $HOME/.bash_functions_custom
+
+# Source stock aliases, then custom aliases.
+[[ -f "$HOME/.bash_aliases" ]] && . $HOME/.bash_aliases
+[[ -f "$HOME/.bash_aliases_custom" ]] && . $HOME/.bash_aliases_custom
+
+# Source stock key bindings, then custom key bindings.
+[[ -f "$HOME/.bash_bindings" ]] && . $HOME/.bash_bindings
+[[ -f "$HOME/.bash_bindings_custom" ]] && . $HOME/.bash_bindings_custom
+
+# Handle PS1 and PS2.
+if [ "$TERM" = "linux" ]; then
+    . $HOME/.bash_theme_tty
+elif [ ! -z "$SSH_CONNECTION" ]; then
+    SSH=$(echo $SSH_CONNECTION | /usr/bin/env awk '{ print $1 }')
+    . $HOME/.bash_theme_ssh
+else
+        . $HOME/.bash_theme_oxygenna
+fi
+PS2="# "
+

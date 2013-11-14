@@ -1,0 +1,20 @@
+# Copyright © 2011 Nick Bargnesi <nick@den-4.com>.  All rights reserved.
+#
+# bash-environment is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# bash-environment is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with bash-environment.  If not, see <http://www.gnu.org/licenses/>.
+#
+# This file is sourced by bash for login shells.  The following line
+# runs your .bashrc and is recommended by the bash info pages.
+[[ -f ~/.bash_profile_custom ]] && . ~/.bash_profile_custom
+[[ -f ~/.bashrc ]] && . ~/.bashrc
+

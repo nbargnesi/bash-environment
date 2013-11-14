@@ -1,0 +1,317 @@
+# Copyright © 2011 Nick Bargnesi <nick@den-4.com>.  All rights reserved.
+#
+# bash-environment is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# bash-environment is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with bash-environment.  If not, see <http://www.gnu.org/licenses/>.
+#
+# bash functions
+#
+# Sort Order
+#     Colors
+#     Exports
+#  -->Functions
+#     Aliases
+#     Bindings
+#
+
+# Use a faster CPU frequency governor
+faster-cpus() {
+    # Current governor for CPU 0
+    CUR_GOV=$(cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor)
+    if [ -z "$CUR_GOV" ]; then
+        echo 'Failed to get current frequency governor.'
+        return
+    fi
+    case "$CUR_GOV" in
+        "powersave")
+        NEXT_GOV="userspace"
+        MSG="Slow -> Userspace"
+        ;;
+        "userspace")
+        NEXT_GOV="conservative"
+        MSG="Userspace -> Conservative"
+        ;;
+        "conservative")
+        NEXT_GOV="ondemand"
+        MSG="Conservative -> On-Demand"
+        ;;
+        "ondemand")
+        NEXT_GOV="performance"
+        MSG="On-Demand -> Fast"
+        ;;
+        "performance")
+        echo "Maximum CPU frequency reached (performance governor)."
+        return
+        ;;
+        *)
+        echo "Unhandled governor: $CUR_GOV."
+        ;;
+    esac
+    let -i CPUS=$(hw_num_cpus)
+    let -i i=0
+    while [ $i -lt $CPUS ]; do
+        if ! sudo cpufreq-set -c $i -g "$NEXT_GOV" >/dev/null; then
+            echo "Failed to set frequency governor ($NEXT_GOV) on CPU $i."
+            return
+        fi
+        let i=$i+1
+    done
+    echo "$MSG"
+}
+
+# Use a slower CPU frequency governor
+slower-cpus() {
+    # Current governor for CPU 0
+    CUR_GOV=$(cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor)
+    if [ -z "$CUR_GOV" ]; then
+        echo 'Failed to get current frequency governor.'
+        return
+    fi
+    case "$CUR_GOV" in
+        "performance")
+        NEXT_GOV="ondemand"
+        MSG="Performance -> On-Demand"
+        ;;
+        "ondemand")
+        NEXT_GOV="conservative"
+        MSG="On-Demand -> Conservative"
+        ;;
+        "conservative")
+        NEXT_GOV="userspace"
+        MSG="Conservative -> Userspace"
+        ;;
+        "userspace")
+        NEXT_GOV="powersave"
+        MSG="Userspace -> Slow"
+        ;;
+        "powersave")
+        echo "Minimum CPU frequency reached (powersave governor)."
+        return
+        ;;
+        *)
+        echo "Unhandled governor: $CUR_GOV."
+        ;;
+    esac
+    let -i CPUS=$(hw_num_cpus)
+    let -i i=0
+    while [ $i -lt $CPUS ]; do
+        if ! sudo cpufreq-set -c $i -g "$NEXT_GOV" >/dev/null; then
+            echo "Failed to set frequency governor ($NEXT_GOV) on CPU $i."
+            return
+        fi
+        let i=$i+1
+    done
+    echo "$MSG"
+}
+
+# Push new directories onto the stack.
+function push-cd() {
+    if [ "$1" ]; then
+        pushd "$1" >/dev/null
+    else
+        pushd  $HOME >/dev/null
+    fi
+}
+
+function pop-cd() {
+    if [ "$(dirs -v | wc -l)" -eq 1 ]; then
+        echo 'pop-cd: no previous directory'
+        return
+    fi
+    popd
+}
+
+function recursively-remove-directories() {
+    dirs=$(find . -mindepth 1 -type d | wc -l)
+    find . -mindepth 1 -type d
+    echo
+    echo -en "If you answer yes, the above ${dirs} directories will be "
+    echo -en "removed!\n"
+    echo
+    echo -en "Are you sure? "
+    read REPLY
+    if [ "${REPLY}" == "yes" ]; then
+        echo -en "[ENTER] when ready."
+        read
+        find . -mindepth 1 -type d -print0 | xargs -0 rm -fr
+    fi
+}
+
+function go-to-warp() {
+    if [ -z $(which sox 2>/dev/null) ]; then
+        echo "Warp drive only available with Sox."
+        echo "Get it here: http://sox.sourceforge.net"
+        return
+    fi
+    echo "Engaging warp drive."
+    play -n -c1 synth whitenoise \
+        lowpass -1 120 \
+        lowpass -1 120 \
+        lowpass -1 120 \
+        gain +14 >/dev/null 2>&1
+   echo "Dropping out of warp."
+}
+
+function find-exts() {
+    if [ -z "$1" ]; then
+        echo "Usage: find-exts [EXTENSION]..."
+        echo
+        echo "Recursively finds all files ending with the provided extensions"
+        echo "starting from the current working directory."
+        return
+    fi
+    for ext in $@; do
+        find . -name "*.${ext}" -type f
+    done
+}
+
+function remove-exts() {
+    if [ -z "$1" ]; then
+        echo "Usage: remove-exts [EXTENSION]..."
+        echo
+        echo "Recursively removes all files ending with the provided extensions"
+        echo "starting from the current working directory."
+        return
+    fi
+    for ext in $@; do
+        find . -name "*.${ext}" -type f -print0 | xargs -0 rm
+    done
+}
+
+function come-here() {
+    if [ $# -ne 2 ]; then
+        echo "Usage: come-here HOST PORT"
+        echo
+        echo "Brings the PORT on HOST here."
+        return
+    fi
+    echo "Making magic happen, [CTRL-C] when you're done with me."
+    HOST=$1
+    PORT=$2
+    ssh $HOST -nN -L $PORT:localhost:$PORT
+}
+
+function most-recent() {
+    ls -lt | head -n 10
+}
+
+# Support for ad hoc versioning of directories
+function local-git-dir() {
+    pwd | sha256sum | awk '{ print $1 }'
+}
+
+function local-git-init() {
+    if [ -z "${ENV_REPOS_PATH}" ]; then
+        echo "ENV_REPOS_PATH has not been set."
+        echo "--"
+        echo "I need this set to a directory so I can store"
+        echo "git metadata for every locally versioned directory."
+    fi
+    GIT_DIR="${ENV_REPOS_PATH}/$(local-git-dir)"
+    git init --separate-git-dir=${GIT_DIR}
+}
+
+function tag-temp() {
+    which tmsu >/dev/null 2>&1
+    if [ $? -eq 1 ]; then
+        echo "tmsu has not been found"
+        echo "--"
+        echo "I use tmsu to tag things as temporary."
+    fi
+    tmsu tag --tags temporary $@
+}
+
+function untag-temp() {
+    which tmsu >/dev/null 2>&1
+    if [ $? -eq 1 ]; then
+        echo "tmsu has not been found"
+        echo "--"
+        echo "I use tmsu to tag things as temporary."
+    fi
+    tmsu untag --tags temporary $@
+}
+
+function purge-temp() {
+    which tmsu >/dev/null 2>&1
+    if [ $? -eq 1 ]; then
+        echo "tmsu has not been found"
+        echo "--"
+        echo "I use tmsu to tag things as temporary."
+    fi
+    FILES=$(tmsu files --explicit temporary)
+    if [ -z "${FILES}" ]; then
+        echo "Nothing temporary!"
+        return
+    fi
+    echo ${FILES}
+    echo -en "Ready to remove, [CTRL-C] to cancel."
+    read
+    rm -frv ${FILES}
+    tmsu untag --tags temporary ${FILES}
+}
+
+function show-temp() {
+    which tmsu >/dev/null 2>&1
+    if [ $? -eq 1 ]; then
+        echo "tmsu has not been found"
+        echo "--"
+        echo "I use tmsu to tag things as temporary."
+    fi
+    FILES=$(tmsu files --explicit temporary)
+    if [ -z "${FILES}" ]; then
+        echo "Nothing temporary!"
+        return
+    fi
+    echo "${FILES}"
+}
+
+function remove-this-directory() {
+    pwd
+    echo -en "Ready to remove this directory, [CTRL-C] to cancel."
+    read
+    rm -fr $(pwd)
+    cd ..
+}
+
+# lc: last command
+#
+# Without arguments, executes the last command similar to !!. With arguments,
+# executes the arguments with command substitution for !!.
+#
+# E.g., the following finds one or more files named some_file.txt:
+#   find -name some_file.txt
+# Using "lc vim" would execute "vim $(find -name some_file.txt)".
+#
+function lc() {
+    PREV_CMD=$(history | tail -n 2 | head -n1 | awk '{ $1=""; print }')
+    PREV_CMD=$(echo $PREV_CMD | sed -e 's/^[ \t]*//')
+    if [ $# -eq 0 ]; then
+        echo "Executing: \"$PREV_CMD\"..."
+        $PREV_CMD
+        return $?
+    fi
+    $@ $($PREV_CMD)
+}
+
+# Without arguments, shows the diffs from commit to commit for the entire
+# working tree. With arguments, shows the diffs from commit to commit for the
+# paths specified.
+#
+# E.g., the following diffs some_file.txt since it was first committed:
+#   git-through-time some_file.txt
+#
+function git-through-time() {
+    FIRST=$(git rev-list HEAD --reverse | head -n 1)
+    LAST=$(git rev-list HEAD | head -n 1)
+    git log -u ${FIRST}..${LAST} $@
+}
+

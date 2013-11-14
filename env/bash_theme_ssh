@@ -1,0 +1,15 @@
+# Copyright © 2011 Nick Bargnesi <nick@den-4.com>.  All rights reserved.
+#
+# bash-environment is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# bash-environment is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with bash-environment.  If not, see <http://www.gnu.org/licenses/>.
+PS1="\n${DARK_4}-${MID_0}-${MID_2}[${MID_5}\d${MID_0}, ${MID_10}\t${NORMAL}${MID_2}]${MID_0}--${MID_2}[${MID_0} via ${BLACK_BG}${SSH}${NO_COLOR}${MID_2}]${MID_0}-${DARK_4}-\n${MID_2}-${MID_4}-${MID_8}(${MID_10}\u${NORMAL}@${MID_12}\h${MID_8})${LIGHT_3}-${MID_13}-${MID_9}-${MID_5}-${MID_2}-${DARK_4}-${MID_8}(${WHITE}\w${MID_8})${MID_8}-${MID_2}-${NO_COLOR}\n# "

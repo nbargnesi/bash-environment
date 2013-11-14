@@ -1,0 +1,63 @@
+# Copyright © 2011 Nick Bargnesi <nick@den-4.com>.  All rights reserved.
+#
+# bash-environment is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# bash-environment is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with bash-environment.  If not, see <http://www.gnu.org/licenses/>.
+#
+# bash key bindings
+#
+# Sort Order
+#     Colors
+#     Exports
+#     Functions
+#     Aliases
+#  -->Bindings
+#
+
+# Pop directory - CTRL-O
+bind '"\C-o": "popd\C-e\n"'
+
+# Go up a directory - CTRL-P
+bind '"\C-p": "cd ..\C-e\n"'
+
+# Get a root shell - CTRL-K
+bind '"\C-k": "sudo su -lp\C-e\n"' 
+
+# Move forward a word (forward-word) - CTRL-F
+bind '"\C-f": forward-word'
+
+# Move backward a word (backward-word) - CTRL-B
+bind '"\C-b": backward-word'
+
+# Increase CPU speed - F12
+bind '"\e[24~": "faster-cpus\C-e\n"'
+
+# Decrease CPU speed - F11
+bind '"\e[23~": "slower-cpus\C-e\n"'
+
+# Force DPMS standby - F10
+bind '"\e[21~": "xset dpms force standby\C-e\n"'
+
+# Suspend - F9
+bind '"\e[20~": "sudo pm-suspend\C-e\n"'
+
+# List most recent files.
+bind '"\C-n": "most-recent\C-e\n"'
+
+# Tag a file or directory as being temporary.
+bind '"\C-t": "tag-temp "'
+
+# Untag a file or directory as being temporary.
+bind '"\C-g": "untag-temp "'
+
+# Show files and directories tagged as temporary.
+bind '"\C-f": "show-temp\C-e\n"'

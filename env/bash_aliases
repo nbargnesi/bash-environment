@@ -1,0 +1,99 @@
+# Copyright © 2011 Nick Bargnesi <nick@den-4.com>.  All rights reserved.
+#
+# bash-environment is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# bash-environment is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with bash-environment.  If not, see <http://www.gnu.org/licenses/>.
+#
+# bash aliases
+#
+# Sort Order
+#     Colors
+#     Exports
+#     Functions
+#  -->Aliases
+#     Bindings
+#
+
+alias vi='vim'
+alias ll='ls -l'
+alias la='ls -A'
+alias ls='ls --color=auto -sh'
+alias a='cd $HOME/Applications'
+alias whereami='hostname'
+alias cfg='./configure'
+alias mk='make'
+alias cm='cfg && mk'
+
+#
+# Hardware
+#
+alias hw_num_cpus='grep "processor.*: [0-9]*" /proc/cpuinfo | wc -l'
+
+#
+# Power
+#
+alias dpms-standby='xset dpms force standby'
+alias suspend='sudo pm-suspend'
+
+#
+# Shortcuts
+#
+alias vd='vimdiff'
+alias shell='sudo su -'
+alias less='less -r'
+alias less='less -r'
+alias suq='sort | uniq'
+alias suqc='sort | uniq -c'
+alias mca='make clean all'
+alias mc='make clean'
+alias find-broken-symlinks='for i in `find -type l`; do [ -e $i ] || echo $i is broken; done'
+alias mci-notests='mvn clean install -DskipTests'
+alias mci='mvn clean install'
+alias mcp='mvn clean package'
+alias cd=push-cd
+alias re-env='source $HOME/.bashrc'
+alias pingme="notify-send 'Completed' 'Something has finished.' \
+              -i /usr/share/icons/Tango/scalable/status/messagebox_info.svg -t 4000"
+alias waiter='python3 -m http.server'
+alias rmtd='remove-this-directory'
+
+# Subversion
+alias svn='/usr/bin/env colorsvn'
+alias ss='svn status'
+alias svnurl='svn info | line 2 | field 2'
+alias ssqu='svn status -qu'
+
+# Mercurial
+alias hgs='hg status'
+alias hgd='hg cdiff'
+alias hgu='hg update'
+alias hgdl='hg cdiff | less'
+
+# Git
+alias g='git'
+alias gst='g status'
+alias gl='g pull'
+alias gp='g push'
+alias gd='g diff'
+alias gdv='g diff -w "$@" | vi -' # -w Ignores whitespace
+alias gc='g commit -v' # -v Shows unified diff at bottom of commit msg template
+alias gca='g commit -v -a' # -a Auto stages files that are modified or deleted
+alias gco='g checkout'
+alias gb='g branch'
+alias gba='g branch -a' # -a List both remote and local tracked branches
+alias gld='g ls-files --deleted'
+alias glo='g ls-files --others'
+alias glm='g ls-files --modified'
+alias gpue='git push upstream experimental'
+
+alias gs="echo 'You probably want: gst'"
+alias drop-caches="sudo sh -c 'echo 3 > /proc/sys/vm/drop_caches'"

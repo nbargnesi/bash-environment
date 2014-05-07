@@ -23,4 +23,12 @@
 #     Bindings
 #
 
-export PATH=$HOME/bin:$PATH:/usr/sbin:/sbin
+PATH=$HOME/bin:$PATH:/usr/sbin:/sbin
+
+# Handle RubyGems bin paths
+if which -s ruby; then
+    GEM_PATHS=$(ruby -e "print Gem.path.map {|x| x += '/bin'}.join(':')")
+    PATH=$GEM_PATHS:$PATH
+fi
+
+export PATH

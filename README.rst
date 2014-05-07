@@ -1,4 +1,4 @@
-Copyright © 2011-2013 Nick Bargnesi <nick@den-4.com>.  All rights reserved.
+Copyright © 2011-2014 Nick Bargnesi <nick@den-4.com>.  All rights reserved.
 
 bash-environment is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

@@ -315,3 +315,23 @@ function git-through-time() {
     git log -u ${FIRST}..${LAST} $@
 }
 
+# Comma-join; echoes the arguments joined by ','.
+# E.g.,
+#     cjoin "foo" "bar"
+# Echoes:
+#     "foo,bar"
+function cjoin {
+    local IFS=","
+    echo "$*"
+}
+
+# Tab-join; echoes the arguments joined by '	'.
+# E.g.,
+#     tjoin "foo" "bar"
+# Echoes:
+#     "foo	bar'
+function tjoin {
+    local IFS="	"
+    echo "$*"
+}
+

@@ -1,212 +1,77 @@
-2013-06-25  Nick Bargnesi  <nick@den-4.com>
-
-	* README.rst:
-	README.rst; bump
-	[2713f791180a] [tip]
-
-	* README, README.rst:
-	README -> README.rst
-	[a85b151bd760]
-
-	* env/bash_functions:
-	add git-through-time function
-	[cc3d3761041b]
-
-2013-06-07  Nick Bargnesi  <nick@den-4.com>
-
-	* env/bash_functions:
-	add lc function; command substituting using !!
-	[8c1dd777e548]
-
-2013-05-21  Nick Bargnesi  <nick@den-4.com>
-
-	* env/bash_aliases:
-	add alias "drop-caches" to drop page, dentries, and inode cache
-	[52a3b9c5ff18]
-
-2012-10-21  Nick Bargnesi  <nick@den-4.com>
-
-	* env/bash_aliases:
-	fix ll alias
-	[a9e8b5def02f] <osx>
-
-	* env/bash_aliases:
-	Change all ls invocations to gls
-	[203f5b93961d] <osx>
-
-	* env/bash_aliases:
-	Update bash_aliases for OS X; alias ls to gls (for coreutils)
-	[a9b0f4462132] <osx>
-
-2012-09-17  Nick Bargnesi  <nick@den-4.com>
-
-	* env/bash_functions:
-	Remove local-git, use separate-git-dir during init instead
-	[914917b0160b]
-
-2012-08-04  Nick Bargnesi  <nick@den-4.com>
-
-	* env/bash_aliases:
-	Add glo alias for 'git ls-files --others'
-	[8b43c0b7f836]
-
-2012-08-03  Nick Bargnesi  <nick@den-4.com>
-
-	* env/bash_aliases:
-	Add gld alias for 'git ls-files --deleted'
-
-	This makes shell fu like this possible: git rm $(gld)
-	[2617ff4c9fd1]
-
-2012-08-02  Nick Bargnesi  <nick@den-4.com>
-
-	* env/bash_aliases, env/bash_functions:
-	Add function to remove current directory; alias to rmtd
-	[1512bc08e23b]
-
-2012-07-18  Nick Bargnesi  <nick@den-4.com>
-
-	* env/bash_bindings, env/bash_functions:
-	Integrate tmsu; adds CTRL-t, CTRL-g, and CTRL-f
-
-	Usage: Tag one or more files as temporary: CTRL-t FILE...
-
-	 Untag one or more files as temporary: CTRL-g FILE...
-
-	 Show tagged temporary files and directories: CTRL-f
-
-	The function 'purge-temp' removes all things tagged temporary.
-	[5b4736c60a99]
-
-2012-07-17  Nick Bargnesi  <nick@den-4.com>
-
-	* env/bash_aliases:
-	Alias mcp -> 'mvn clean package'
-	[6c113c1dee01]
-
-2012-07-01  Nick Bargnesi  <nick@den-4.com>
-
-	* env/bash_functions:
-	Bump local-git-dir; compute SHA-256 checksums for paths instead of
-	trying to heuristically mangle them.
-	[8d6a0a507420]
-
-2012-06-05  Nick Bargnesi  <nick@den-4.com>
-
-	* env/bash_aliases, env/bash_functions:
-	Add per-directory local-git support
-
-	If you set ENV_REPOS_PATH, the functions local-git and local-git-
-	init are available as commands. This adds the capability to version
-	any directory you're currently in via git. The git metadata will be
-	stored in ENV_REPOS_PATH, keeping the working copy 100% separate
-	from version control.
-
-	E.g.: cd $HOME/bin; ENV_REPOS_PATH=$HOME/Repos local-git-init will
-	version your $HOME/bin directory and keep metadata in $HOME/Repos.
-	[15aa00dfdef4]
-
-2012-05-03  Nick Bargnesi  <nick@den-4.com>
-
-	* env/bash_bindings:
-	Bind CTRL-n to most-recent
-	[bcd5ea6a29fb]
-
-	* env/bash_functions:
-	Add come-here and most-recent functions.
-
-	come-here: make a remote host's port available locally via ssh
-	forwarding most-recent: list the top 10 most recently modified files
-	[5287964db406]
-
-2012-04-05  Nick Bargnesi  <nick@den-4.com>
-
-	* env/bash_aliases, env/bash_functions:
-	Merge
-	[2475be526e8d]
-
-2012-03-28  Nick Bargnesi  <nick@den-4.com>
-
-	* env/bash_functions:
-	Add functions go-to-warp, find-exts, and remove-exts. go-to-warp:
-	mimics the warp drive of the Enterprise via Sox for geek points
-	find-exts: recursively finds all files ending with provided
-	extensions remove-exts: recusrively removes all files ending with
-	provided extensions
-
-	E.g.: remove-exts tmp
-	[3a26e8ca5aae]
-
-	* env/bash_aliases:
-	Add aliases cfg, mk, and cm for ./configure, make, and the two
-	respectively.
-	[2f92f14f7619]
-
-2012-04-05  Nick Bargnesi  <nick@den-4.com>
-
-	* env/bash_aliases:
-	Expand support for version control aliases to incorporate Git
-	[bd588f3bc93c]
-
-	* env/bash_functions:
-	Add function to recursively remove directories - force user to
-	respond to prompt with 'yes'
-	[9da2727607e8]
-
-2011-11-17  Nick Bargnesi  <nick@den-4.com>
-
-	* env/bash_aliases:
-	Add aliases pingme and waiter.
-	 * pingme: pops up a libnotify msg, useful w/ long running commands
-	 * waiter: serves the files in the current directory via HTTP
-	[d3f6018787f0]
-
-2011-10-12  Nick Bargnesi  <nick@den-4.com>
-
-	* env/bash_aliases:
-	Remove 'hgp'; it's ambiguous w/ pull and push.
-	[4702adda8098]
-
-	* env/bash_aliases:
-	Add hg aliases.
-	[2207d7ad241f]
-
-2011-10-09  Nick Bargnesi  <nick@den-4.com>
-
-	* env/bash_profile:
-	Source bash_profile_custom before bashrc.
-	[125d3592567e]
-
-2011-10-08  Nick Bargnesi  <nick@den-4.com>
-
-	* env/bashrc:
-	Source custom colors.
-	[691045a977a5]
-
-2011-10-07  Nick Bargnesi  <nick@den-4.com>
-
-	* env/bash_functions:
-	Add start-tomcat and stop-tomcat.
-	[ee13b327eaa0]
-
-	* env/bash_exports:
-	Add /usr/sbin and /sbin to default PATH.
-	[067094ef7124]
-
-	* env/bash_bindings:
-	Add -lp to sudo su.
-	[eaefc283e720]
-
-	* env/bash_aliases:
-	Add re-env to source $HOME/.bashrc.
-	[52a009d05c10]
-
-2011-10-06  Nick Bargnesi  <nick@den-4.com>
-
-	* COPYING, README, env/bash_aliases, env/bash_bindings,
-	env/bash_colors, env/bash_exports, env/bash_functions,
-	env/bash_profile, env/bash_theme_oxygenna, env/bash_theme_ssh,
-	env/bash_theme_tty, env/bashrc, install.sh:
-	Initial import.
-	[04ceeca22ca7]
-
+commit 589123a7b7a1f149d1f741cd99ac853f1bdb028d
+Author: Nick Bargnesi <nick@den-4.com>
+Date:   Wed Jun 4 14:11:00 2014 -0400
+
+    improve local-git-* workflows
+    
+    Make the current directory a git repository:
+        local-git-init
+    
+    Find the git repository for the current directory:
+        local-git-dir
+    
+    Remove the current directory's git repository:
+        local-git-destroy
+
+ env/bash_functions | 43 +++++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 39 insertions(+), 4 deletions(-)
+
+commit 4cc4426e476a704196618b6384b9ca5d6133ecc6
+Author: Nick Bargnesi <nick@den-4.com>
+Date:   Tue May 27 22:56:48 2014 -0400
+
+    add cjoin, tjoin splitting functions
+
+ env/bash_functions | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
+
+commit d420ef3a0861161431ab96a91c5333198f23feef
+Author: Nick Bargnesi <nick@den-4.com>
+Date:   Wed May 7 15:34:32 2014 -0400
+
+    add RubyGems bin paths to PATH
+
+ env/bash_exports | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
+
+commit 5c8060bd5f88c6357e2ae4f2a0d41c032c58e0f6
+Author: Nick Bargnesi <nick@den-4.com>
+Date:   Wed May 7 15:21:11 2014 -0400
+
+    bump copyright years
+
+ README.rst              | 2 +-
+ env/bash_aliases        | 2 +-
+ env/bash_bindings       | 2 +-
+ env/bash_colors         | 2 +-
+ env/bash_exports        | 2 +-
+ env/bash_functions      | 2 +-
+ env/bash_profile        | 2 +-
+ env/bash_theme_oxygenna | 2 +-
+ env/bash_theme_ssh      | 2 +-
+ env/bash_theme_tty      | 2 +-
+ env/bashrc              | 2 +-
+ install.sh              | 2 +-
+ 12 files changed, 12 insertions(+), 12 deletions(-)
+
+commit 970bf9ce82ce744da297b0c99c8127a054a28027
+Author: Nick Bargnesi <nbargnesi@selventa.com>
+Date:   Thu Nov 14 07:10:20 2013 -0500
+
+    import from Bitbucket nbargnesi/bash-environment
+
+ COPYING                 | 674 ++++++++++++++++++++++++++++++++++++++++++++++++
+ ChangeLog               | 212 +++++++++++++++
+ README.rst              |  39 +++
+ env/bash_aliases        |  99 +++++++
+ env/bash_bindings       |  63 +++++
+ env/bash_colors         | 276 ++++++++++++++++++++
+ env/bash_exports        |  26 ++
+ env/bash_functions      | 317 +++++++++++++++++++++++
+ env/bash_profile        |  20 ++
+ env/bash_theme_oxygenna |  15 ++
+ env/bash_theme_ssh      |  15 ++
+ env/bash_theme_tty      |  15 ++
+ env/bashrc              |  77 ++++++
+ install.sh              |  52 ++++
+ 14 files changed, 1900 insertions(+)

@@ -235,6 +235,7 @@ function local-git-destroy() {
         echo "Set this to a directory where I can store your git repositories."
         return 1
     fi
+    local GIT_DIR="$(local-git-dir)"
     if [ ! -d "$GIT_DIR" ]; then
         echo "No git repository at: $GIT_DIR"
         return 1

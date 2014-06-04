@@ -206,18 +206,53 @@ function most-recent() {
 
 # Support for ad hoc versioning of directories
 function local-git-dir() {
-    pwd | sha256sum | awk '{ print $1 }'
+    if [ -z "${ENV_REPOS_PATH}" ]; then
+        echo "ENV_REPOS_PATH has not been set."
+        echo "--"
+        echo "Set this to a directory where I can store your git repositories."
+        return 1
+    fi
+    local REPO_PATH="$ENV_REPOS_PATH"
+    REPO_PATH+="/$(pwd | sha256sum | awk '{ print $1 }')"
+    echo "$REPO_PATH"
 }
 
 function local-git-init() {
     if [ -z "${ENV_REPOS_PATH}" ]; then
         echo "ENV_REPOS_PATH has not been set."
         echo "--"
-        echo "I need this set to a directory so I can store"
-        echo "git metadata for every locally versioned directory."
+        echo "Set this to a directory where I can store your git repositories."
+        return 1
     fi
-    GIT_DIR="${ENV_REPOS_PATH}/$(local-git-dir)"
+    local GIT_DIR="$(local-git-dir)"
     git init --separate-git-dir=${GIT_DIR}
+}
+
+function local-git-destroy() {
+    if [ -z "${ENV_REPOS_PATH}" ]; then
+        echo "ENV_REPOS_PATH has not been set."
+        echo "--"
+        echo "Set this to a directory where I can store your git repositories."
+        return 1
+    fi
+    if [ ! -d "$GIT_DIR" ]; then
+        echo "No git repository at: $GIT_DIR"
+        return 1
+    fi
+    local DOTGIT_FILE="$(git rev-parse --show-toplevel)/.git" || return 1
+    echo
+    echo "If you answer yes, the following will be removed!"
+    echo -e "\t$GIT_DIR"
+    echo -e "\t$DOTGIT_FILE"
+    echo
+    echo -en "Are you sure? "
+    read REPLY
+    if [ "${REPLY}" == "yes" ]; then
+        echo -en "[ENTER] when ready."
+        read
+        rm "$DOTGIT_FILE" || return 1
+        rm -fr "$GIT_DIR" || return 1
+    fi
 }
 
 function tag-temp() {

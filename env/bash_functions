@@ -328,14 +328,40 @@ function remove-this-directory() {
 # Using "lc vim" would execute "vim $(find -name some_file.txt)".
 #
 function lc() {
-    PREV_CMD=$(history | tail -n 2 | head -n1 | awk '{ $1=""; print }')
-    PREV_CMD=$(echo $PREV_CMD | sed -e 's/^[ \t]*//')
+    local PREV_CMD=$(history | tail -n 2 | head -n1 | awk '{ $1=""; print }')
+    local PREV_CMD=$(echo $PREV_CMD | sed -e 's/^[ \t]*//')
     if [ $# -eq 0 ]; then
         echo "Executing: \"$PREV_CMD\"..."
         $PREV_CMD
         return $?
     fi
     $@ $($PREV_CMD)
+}
+
+# lcs: last command (substitution variant)
+#
+# Without arguments, executes the last command similar to !!. With two
+# arguments, executes the arguments with string substitution for !!.
+#
+# E.g., the following finds one or more files named some_file.txt:
+#   find -name some_file.txt
+# Using "lcs txt zip" would execute "find -name some_file.zip".
+#
+function lcs() {
+    local PREV_CMD=$(history | tail -n 2 | head -n1 | awk '{ $1=""; print }')
+    local PREV_CMD=$(echo $PREV_CMD | sed -e 's/^[ \t]*//')
+    if [ $# -eq 0 ]; then
+        echo "Executing: \"$PREV_CMD\"..."
+        $PREV_CMD
+        return $?
+    elif [ $# -ne 2 ]; then
+        echo "Usage: lcs STRING1 STRING2"
+        echo
+        echo "Runs the last command substituting STRING2 for STRING1."
+        return
+    fi
+    local PREV_CMD=$(echo $PREV_CMD | sed -e "s/$1/$2/g")
+    $PREV_CMD
 }
 
 # Without arguments, shows the diffs from commit to commit for the entire

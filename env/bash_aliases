@@ -98,3 +98,7 @@ alias gpue='git push upstream experimental'
 alias gs="echo 'You probably want: gst'"
 alias drop-caches="sudo sh -c 'echo 3 > /proc/sys/vm/drop_caches'"
 alias wgetdl="wget --content-disposition"
+
+# Go
+alias godoc-http="echo 'godoc -http=:6060' && godoc -http=:6060"
+

@@ -102,3 +102,6 @@ alias wgetdl="wget --content-disposition"
 # Go
 alias godoc-http="echo 'godoc -http=:6060' && godoc -http=:6060"
 
+# rlwrap
+alias rlcurl='rlwrap curl'
+

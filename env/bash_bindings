@@ -24,19 +24,13 @@
 #
 
 # Pop directory - CTRL-O
-bind '"\C-o": "popd\C-e\n"'
+bind '"\C-f": "popd\C-e\n"'
 
 # Go up a directory - CTRL-P
 bind '"\C-p": "cd ..\C-e\n"'
 
 # Get a root shell - CTRL-K
-bind '"\C-k": "sudo su -lp\C-e\n"' 
-
-# Move forward a word (forward-word) - CTRL-F
-bind '"\C-f": forward-word'
-
-# Move backward a word (backward-word) - CTRL-B
-bind '"\C-b": backward-word'
+bind '"\C-k": "sudo su -\C-e\n"' 
 
 # Increase CPU speed - F12
 bind '"\e[24~": "faster-cpus\C-e\n"'
@@ -53,11 +47,3 @@ bind '"\e[20~": "sudo pm-suspend\C-e\n"'
 # List most recent files.
 bind '"\C-n": "most-recent\C-e\n"'
 
-# Tag a file or directory as being temporary.
-bind '"\C-t": "tag-temp "'
-
-# Untag a file or directory as being temporary.
-bind '"\C-g": "untag-temp "'
-
-# Show files and directories tagged as temporary.
-bind '"\C-f": "show-temp\C-e\n"'

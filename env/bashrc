@@ -12,12 +12,14 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with bash-environment.  If not, see <http://www.gnu.org/licenses/>.
-# ~/.bashrc: executed by bash(1) for non-login shells.
-# see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
-# for examples
 
-# If not running interactively, don't do anything
-[ -z "$PS1" ] && return
+# Test for an interactive shell.  There is no need to set anything
+# past this point for scp and rcp, and it's important to refrain from
+# outputting anything in those cases.
+if [[ $- != *i* ]] ; then
+# Shell is non-interactive.  Be done now!
+    return
+fi
 
 # don't put duplicate lines in the history. See bash(1) for more options
 # don't overwrite GNU Midnight Commander's setting of `ignorespace'.
@@ -71,7 +73,7 @@ elif [ ! -z "$SSH_CONNECTION" ]; then
     SSH=$(echo $SSH_CONNECTION | /usr/bin/env awk '{ print $1 }')
     . $HOME/.bash_theme_ssh
 else
-        . $HOME/.bash_theme_oxygenna
+    . $HOME/.bash_theme_oxygenna
 fi
 PS2="# "
 

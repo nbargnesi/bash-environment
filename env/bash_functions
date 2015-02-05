@@ -397,3 +397,16 @@ function tjoin {
     echo "$*"
 }
 
+# Take recursive ownership, via sudo, of one or more directories.
+# E.g.,
+#     own /path/to/dir
+function own {
+    if [ $# -eq 0 ]; then
+        echo "$FUNCNAME: DIR..."
+        return
+    fi
+    local ID=$(id -u)
+    local GROUP=$(id -g)
+    sudo chown -R $ID:$GROUP $@
+}
+

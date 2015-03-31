@@ -62,9 +62,10 @@ alias mcp='mvn clean package'
 alias cd=push-cd
 alias re-env='source $HOME/.bashrc'
 alias pingme="notify-send 'Completed' 'Something has finished.' \
-              -i /usr/share/icons/Tango/scalable/status/messagebox_info.svg -t 4000"
+              -i messagebox_info -t 4000"
 alias waiter='python3 -m http.server'
 alias rmtd='remove-this-directory'
+alias fin='less +F'
 
 # Subversion
 alias svn='/usr/bin/env colorsvn'

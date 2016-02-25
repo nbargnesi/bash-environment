@@ -429,7 +429,7 @@ function own {
 function rndchars {
     _need_cmd pwgen
     # if non-zero, exec to show command not found and return
-    if [ $# -ne 0 ]; then pwgen; return; fi
+    if [ $? -ne 0 ]; then pwgen; return; fi
     if [ $# -ne 1 ]; then
         echo "Usage: rndchars <number of characters>"
         echo

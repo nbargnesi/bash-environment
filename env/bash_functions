@@ -501,3 +501,17 @@ function git-ignore {
         shift
     done
 }
+
+# Set upstream tracking branch to the remote argument.
+# E.g., to track origin:
+#     git-track origin
+function git-track {
+    local branch="$(git rev-parse --abbrev-ref HEAD)"
+    if [ $# -ne 1 ]; then
+        echo "Usage: git-track REMOTE"
+        echo
+        echo "Tracks the current branch ($branch) on the remote."
+        return
+    fi
+    git branch --set-upstream-to="$1"/"$branch" "$branch"
+}

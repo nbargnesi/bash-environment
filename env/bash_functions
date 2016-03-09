@@ -440,3 +440,64 @@ function rndchars {
     return 0
 }
 
+# Add * to the .gitignore of each directory argument. Skips arguments that are
+# not directories.
+# E.g., ignore files in build/:
+#     git-ignore-dir-entries build
+function git-ignore-dir-entries {
+    local ignore="$(echo -e '*\n!.gitignore')"
+    while (("$#")); do
+        if [ ! -d "$1" ]; then
+            shift
+            continue
+        fi
+        echo "$ignore" >> "$1"/.gitignore
+        shift
+    done
+}
+
+# Add each argument to the .gitignore of the directory that contains it. Skips
+# arguments that are not regular files.
+# E.g., ignore the file build/a.out:
+#     git-ignore-dir-file build/a.out
+function git-ignore-file {
+    while (("$#")); do
+        if [ ! -f "$1" ]; then
+            shift
+            continue
+        fi
+        base="$(basename "$1")"
+        dir="$(dirname "$1")"
+        echo "$base" >> "$dir"/.gitignore
+        shift
+    done
+}
+
+# Add each argument to the .gitignore of the directory that contains it. Skips
+# arguments that are not directories.
+# E.g., ignore the build directory:
+#     git-ignore-dir build
+function git-ignore-dir {
+    while (("$#")); do
+        if [ ! -d "$1" ]; then
+            shift
+            continue
+        fi
+        base="$(basename "$1")"
+        dir="$(dirname "$1")"
+        echo "$base" >> "$dir"/.gitignore
+        shift
+    done
+}
+
+# Add each argument to the .gitignore of the directory that contains it.
+# E.g., ignore the build directory and the output directory a.out file:
+#     git-ignore build output/a.out
+function git-ignore {
+    while (("$#")); do
+        base="$(basename "$1")"
+        dir="$(dirname "$1")"
+        echo "$base" >> "$dir"/.gitignore
+        shift
+    done
+}

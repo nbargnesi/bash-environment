@@ -23,7 +23,7 @@
 #     Bindings
 #
 
-PATH=$HOME/bin:$PATH:/usr/sbin:/sbin
+PATH=$HOME/bin:$PATH
 
 # Handle RubyGems bin paths
 if which -s ruby; then

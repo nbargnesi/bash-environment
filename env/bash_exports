@@ -31,4 +31,3 @@ if which -s ruby; then
     PATH=$GEM_PATHS:$PATH
 fi
 
-export PATH

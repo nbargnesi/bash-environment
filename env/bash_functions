@@ -1,4 +1,4 @@
-# Copyright © 2011-2016 Nick Bargnesi <nick@den-4.com>.  All rights reserved.
+# Copyright © 2011-2017 Nick Bargnesi <nick@den-4.com>.  All rights reserved.
 #
 # bash-environment is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -361,8 +361,7 @@ function lc() {
 # Using "lcs txt zip" would execute "find -name some_file.zip".
 #
 function lcs() {
-    local PREV_CMD=$(history | tail -n 2 | head -n1 | awk '{ $1=""; print }')
-    local PREV_CMD=$(echo $PREV_CMD | sed -e 's/^[ \t]*//')
+    local PREV_CMD=$(fc -lnr -2 -2 | sed -e 's/^[[:space:]]*//')
     if [ $# -eq 0 ]; then
         echo "Executing: \"$PREV_CMD\"..."
         $PREV_CMD
@@ -373,7 +372,7 @@ function lcs() {
         echo "Runs the last command substituting STRING2 for STRING1."
         return
     fi
-    local PREV_CMD=$(echo $PREV_CMD | sed -e "s/$1/$2/g")
+    PREV_CMD=$(echo $PREV_CMD | sed -e "s/$1/$2/g")
     $PREV_CMD
 }
 
